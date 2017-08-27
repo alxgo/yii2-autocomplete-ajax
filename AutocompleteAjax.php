@@ -1,6 +1,6 @@
 <?php
 
-namespace keygenqt\autocompleteAjax;
+namespace alxgo\autocompleteAjax;
 
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -37,7 +37,11 @@ class AutocompleteAjax extends InputWidget
     {
         $id = $this->getId();
         $this->afterSelect = "var afterSelect{$id} = " . $this->afterSelect;
-        $value = $this->value ? $this->value : $this->model->{$this->attribute};
+        if ($this->model && $this->attribute) {
+            $value = $this->model->{$this->attribute};
+        } else {
+            $value = $this->value; 
+        }
         $this->registerActiveAssets();
 
         $this->getView()->registerJs("{$this->afterSelect}");
@@ -201,7 +205,7 @@ class AutocompleteAjax extends InputWidget
         
         return Html::tag('div', 
                 
-            Html::activeHiddenInput($this->model, $this->attribute, ['id' => $id . '-hidden', 'class' => 'form-control'])
+            $this->renderHiddenInput($id)
             . ($value && $this->startQuery ? Html::tag('div', "<img src='{$this->registerActiveAssets()}/images/load.gif'/>", ['class' => 'autocomplete-image-load']) : '')
             . Html::textInput('', $value && !$this->startQuery ? $value : '', array_merge($this->options, ['id' => $id, 'class' => 'form-control']))
               
@@ -209,5 +213,16 @@ class AutocompleteAjax extends InputWidget
                 'style' => 'position: relative;'
             ]
         );
+    }
+
+    protected function renderHiddenInput($id)
+    {
+        if ($this->model && $this->attribute) {
+            return Html::activeHiddenInput($this->model, $this->attribute, ['id' => $id . '-hidden', 'class' => 'form-control']);
+        } 
+
+        if ($this->name) {
+            return Html::hiddenInput($this->name, $this->value, ['id' => $id . '-hidden', 'class' => 'form-control']);
+        } 
     }
 }
