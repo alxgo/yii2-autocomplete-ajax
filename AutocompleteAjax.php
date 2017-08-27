@@ -8,6 +8,7 @@ use yii\widgets\InputWidget;
 
 class AutocompleteAjax extends InputWidget
 {
+    public $query;
     public $startQuery = true;
     public $multiple = false;
     public $url = [];
@@ -202,12 +203,12 @@ class AutocompleteAjax extends InputWidget
                 });
             ");
         }
-        
+
         return Html::tag('div', 
                 
             $this->renderHiddenInput($id)
             . ($value && $this->startQuery ? Html::tag('div', "<img src='{$this->registerActiveAssets()}/images/load.gif'/>", ['class' => 'autocomplete-image-load']) : '')
-            . Html::textInput('', $value && !$this->startQuery ? $value : '', array_merge($this->options, ['id' => $id, 'class' => 'form-control']))
+            . Html::textInput($this->attribute ? $this->attribute : $this->name . '_str', $value && !$this->startQuery ? $value : $this->query, array_merge($this->options, ['id' => $id, 'class' => 'form-control']))
               
             , [
                 'style' => 'position: relative;'
@@ -225,4 +226,5 @@ class AutocompleteAjax extends InputWidget
             return Html::hiddenInput($this->name, $this->value, ['id' => $id . '-hidden', 'class' => 'form-control']);
         } 
     }
+
 }
