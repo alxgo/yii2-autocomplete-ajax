@@ -37,7 +37,7 @@ class AutocompleteAjax extends InputWidget
     {
         $id = $this->getId();
         $this->afterSelect = "var afterSelect{$id} = " . $this->afterSelect;
-        $value = $this->model->{$this->attribute};
+        $value = $this->value ? $this->value : $this->model->{$this->attribute};
         $this->registerActiveAssets();
 
         $this->getView()->registerJs("{$this->afterSelect}");
