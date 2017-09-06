@@ -208,7 +208,7 @@ class AutocompleteAjax extends InputWidget
                 
             $this->renderHiddenInput($id)
             . ($value && $this->startQuery ? Html::tag('div', "<img src='{$this->registerActiveAssets()}/images/load.gif'/>", ['class' => 'autocomplete-image-load']) : '')
-            . Html::textInput($this->attribute ? $this->attribute : $this->name . '_str', $value && !$this->startQuery ? $value : $this->query, array_merge($this->options, ['id' => $id, 'class' => 'form-control']))
+            . Html::textInput($this->attribute ? $this->attribute : $this->name . '_str', $this->query, array_merge($this->options, ['id' => $id, 'class' => 'form-control']))
               
             , [
                 'style' => 'position: relative;'
